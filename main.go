@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/mux"
 	"helloworld/travian/engine"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
 	"time"
@@ -14,20 +15,20 @@ import (
 )
 
 var (
-	readModel  travian.ReadModelFacade
-	dispatcher ycq.Dispatcher
-	repo       travian.VillageRepository
-
+	readModel   travian.ReadModelFacade
+	dispatcher  ycq.Dispatcher
+	repo        travian.VillageRepository
+	letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	villageView = parseTemplate("dorf1.html")
 )
 
-
 func init() {
+	rand.Seed(time.Now().UnixNano())
 	// CQRS Infrastructure configuration
 
 	// Configure the read model
 	// Create a readModel instance
-	readModel = travian.NewMap(200, 10);
+	readModel = travian.NewMap(200, 10)
 
 	// we have several projection that we need to init
 
@@ -55,10 +56,19 @@ func init() {
 		&travian.EstablishVillage{},
 		&travian.UpgradeField{},
 	)
-
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	//id := ycq.NewUUID()
+	em := ycq.NewCommandMessage("1", &travian.EstablishVillage{
+		X:     0,
+		Y:     0,
+		Owner: "admin",
+	})
+
+	err = dispatcher.Dispatch(em)
+
 }
 
 func main() {
@@ -109,33 +119,28 @@ func setupHandlers() {
 
 	r.Methods("GET").Path("/village").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		//params := mux.Vars(r)
-		if r.Method == http.MethodPost {
-			err := r.ParseForm()
-			if err != nil {
-				log.Fatal(err)
-			}
 
-			id := r.Form.Get("ID")
-			//id := ycq.NewUUID()
-			em := ycq.NewCommandMessage(id, &travian.EstablishVillage{
-				X:     0,
-				Y:     0,
-				Owner: r.Form.Get("name"),
-			})
+		id := ycq.NewUUID()
+		em := ycq.NewCommandMessage(id, &travian.EstablishVillage{
+			X:     0,
+			Y:     0,
+			Owner: RandStringRunes(20),
+		})
 
-			err = dispatcher.Dispatch(em)
-			if err != nil {
-				log.Println(err)
-			}
-
-			http.Redirect(w, r, "/", http.StatusSeeOther)
+		if err := dispatcher.Dispatch(em); err != nil {
+			log.Println(err)
 		}
 
-		d := struct {
-			Title string
-		}{"Village 1"}
+		//http.Redirect(w, r, "/village", http.StatusSeeOther)
 
-		if err := villageView.Execute(w, r, d); err != nil {
+		village := readModel.GetVillage("1")
+
+		fmt.Println(village)
+		//d := struct {
+		//	Title string
+		//}{"Village 1"}
+
+		if err := villageView.Execute(w, r, village); err != nil {
 			log.Println(err)
 		}
 	})
@@ -165,9 +170,9 @@ func setupHandlers() {
 
 			http.Redirect(w, r, "/", http.StatusSeeOther)
 		}
-//!= nil {
-//			log.Fatal(err)
-//		}
+		//!= nil {
+		//			log.Fatal(err)
+		//		}
 		//if err != nil {
 		//	log.Fatal(err)
 		//}
@@ -226,4 +231,13 @@ func setupHandlers() {
 	//	}
 	//	http.NotFound(w, r)
 	//})
+
+}
+
+func RandStringRunes(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	return string(b)
 }

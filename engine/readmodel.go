@@ -1,6 +1,6 @@
 package travian
 
-var bullShitDatabase *BullShitDatabase
+var cache *Cache
 
 // ReadModelFacade is an interface for the readmodel facade
 type ReadModelFacade interface {
@@ -18,21 +18,20 @@ type Map struct {
 
 func (m Map) GetVillage(uuid string) *Village {
 
-	return &Village{}
-	//return m.Tiles[0][0].(Village);
+	return cache.villages[uuid]
 }
 
 func (m Map) GetVillages() (villages []Village) {
 
-	for i, _ := range bullShitDatabase.Details {
-		villages = append(villages, *bullShitDatabase.Details[i])
+	for i, _ := range cache.villages {
+		villages = append(villages, *cache.villages[i])
 	}
 	return villages
 
 }
 
 //
-//// NewBullShitDatabase constructs a new BullShitDatabase
+//// newCache constructs a new cache
 func NewMap(seed int, size int) *Map {
 	return &Map{
 		Seed:  seed,
@@ -40,15 +39,14 @@ func NewMap(seed int, size int) *Map {
 	}
 }
 
-// BullShitDatabase is a simple in memory repository
-type BullShitDatabase struct {
-	Details map[string]*Village
+// cache is a simple in memory repository
+type Cache struct {
+	villages map[string]*Village
 }
 
-// NewBullShitDatabase constructs a new BullShitDatabase
-func NewBullShitDatabase() *BullShitDatabase {
-	return &BullShitDatabase{
-
-		Details: make(map[string]*Village),
+// newCache constructs a new cache
+func newCache() *Cache {
+	return &Cache{
+		villages: make(map[string]*Village),
 	}
 }

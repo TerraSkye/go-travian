@@ -3,6 +3,7 @@ package travian
 import (
 	"fmt"
 	ycq "github.com/jetbasrawi/go.cqrs"
+	"time"
 )
 
 type Production struct {
@@ -21,8 +22,8 @@ type ResourceProjection struct {
 
 // NewInventoryItemDetailView constructs a new InventoryItemDetailView
 func NewResourceProjection() *ResourceProjection {
-	if bullShitDatabase == nil {
-		bullShitDatabase = NewBullShitDatabase()
+	if cache == nil {
+		cache = newCache()
 	}
 
 	return &ResourceProjection{}
@@ -35,34 +36,37 @@ func (v *ResourceProjection) Handle(message ycq.EventMessage) {
 
 	case *VillageEstablished:
 		fmt.Print("hallo")
-		bullShitDatabase.Details[message.AggregateID()] = &Village{ID: event.ID,Name: event.Owner}
-
+		cache.villages[message.AggregateID()] = &Village{ID: event.ID, Name: event.Owner}
+		//delay task for EA upgrades
+		go verySlowFunction()
+		go ticker()
 	case *FieldUpgraded:
 		fmt.Printf("index upgraded %d", event.index)
 
 	}
 }
 
-// GetDetailsItem gets an InventoryItemDetailsDto by ID
-func (v *ResourceProjection) getWood() (current int, max int) {
-	return 0, 800;
+// Returns a string after longer pause
+func verySlowFunction() interface{} {
+	time.Sleep(time.Second * 4)
+	fmt.Println("very slow function")
+	return "I'm ready"
 }
 
-// GetDetailsItem gets an InventoryItemDetailsDto by ID
-func (v *ResourceProjection) getCrop() (current int, max int) {
-	return 0, 800;
-}
+// Returns a string after longer pause
+func ticker() interface{} {
+	ticker := time.NewTicker(500 * time.Millisecond)
+	go func() {
+		for t := range ticker.C {
+			fmt.Println("Tick at", t)
+		}
+	}()
 
-// GetDetailsItem gets an InventoryItemDetailsDto by ID
-func (v *ResourceProjection) getIron() (current int, max int) {
-	return 0, 800;
-}
-
-// GetDetailsItem gets an InventoryItemDetailsDto by ID
-func (v *ResourceProjection) getClay() (current int, max int) {
-	return 0, 800;
-}
-
-func updateResources() {
-
+	// Tickers can be stopped like timers. Once a ticker
+	// is stopped it won't receive any more values on its
+	// channel. We'll stop ours after 1600ms.
+	time.Sleep(1600 * time.Millisecond)
+	ticker.Stop()
+	fmt.Println("Ticker stopped")
+	return "Done"
 }
