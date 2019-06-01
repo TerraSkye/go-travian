@@ -1,0 +1,32 @@
+.day_image {
+    background-image: url("../gpack/travian_default/img/l/day.gif");
+    width: 18px;
+    height:18px;
+}
+.night_image {
+    background-image: url("../gpack/travian_default/img/l/night.gif");
+    width: 18px;
+    height:18px;
+}
+#container {
+    width: 30px;
+    height: 60px;
+    position: relative;
+}
+#wrapper > #container {
+    display: table;
+    position: static;
+}
+#container div {
+    position: absolute;
+    top: 50%;
+}
+#container div div {
+    position: relative;
+    top: -50%;
+}
+#container > div {
+    display: table-cell;
+    vertical-align: middle;
+    position: static;
+}

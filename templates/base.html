@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title>Travian </title>
+    <link REL="shortcut icon" HREF="/assets/favicon.ico"/>
+    <meta http-equiv="cache-control" content="max-age=0"/>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta http-equiv="expires" content="0"/>
+    <meta http-equiv="imagetoolbar" content="no"/>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <script src="/assets/mt-full.js" type="text/javascript"></script>
+    <script src="/assets/unx.js" type="text/javascript"></script>
+    <script src="/assets/new.js" type="text/javascript"></script>
+    <link href="/assets/gpack/lang/en/compact.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/gpack/lang/en/lang.css" rel="stylesheet" type="text/css"/>
+    <link href='/assets/gpack/travian.css' rel='stylesheet' type='text/css'/>
+    <link href='/assets/css/base.css' rel='stylesheet' type='text/css'/>
+    <link href='/assets/gpack/modules/new_layout_ltr.css' rel='stylesheet' type='text/css'/>
+
+    <script type="text/javascript">
+        window.addEvent('domready', start);
+    </script>
+</head>
+
+<body class="v35 ie ie8">
+<div class="wrapper">
+    <img style="filter:chroma();" src="/assets/img/x.gif" id="msfilter" alt=""/>
+    <div id="dynamic_header">
+    </div>
+
+    <div id="header">
+        <div id="mtop">
+            {{/*            todo correct urls*/}}
+            <a href="/village" id="n1" accesskey="1">
+                <img src="/assets/img/x.gif" title="Village overview"
+                     alt="Village overview"/>
+            </a>
+            <a href="/assets/dorf2.php" id="n2" accesskey="2">
+                <img src="/assets/img/x.gif" title="Village centre" alt="Village centre"/>
+            </a>
+            <a href="/assets/karte.php" id="n3" accesskey="3">
+                <img src="/assets/img/x.gif" title="Map" alt="Map"/>
+            </a>
+            <a href="statistiken.php" id="n4" accesskey="4">
+                <img src="/assets/img/x.gif" title="Statistics"
+                     alt="Statistics"/>
+            </a>
+            {{/*            TODO i1 till i4 depending on the state*/}}
+            <div id="n5" class="i1">
+                <a href="berichte.php" accesskey="5">
+                    <img src="/assets/img/x.gif" class="l" title="Reports" alt="Reports"/>
+                </a>
+                <a href="nachrichten.php" accesskey="6">
+                    <img src="/assets/img/x.gif" class="r" title="Messages" alt="Messages"/>
+                </a>
+            </div>
+
+
+            <a href="plus.php" id="plus">
+                <span class="plus_text">
+                    <span class="plus_g">P</span>
+                    <span class="plus_o">l</span>
+                    <span class="plus_g">u</span>
+                    <span class="plus_o">s</span>
+               </span>
+                {{/*                todo active inactive*/}}
+                <img src="/assets/img/x.gif" id="btn_plus" class="active" title="Plus menu" alt="Plus menu"/></a>
+
+
+            <div id="wrapper">
+                <div id="container">
+                    <div>
+                        {{/*                        todo day/night image */}}
+{{/*                        <div>*/}}
+{{/*                            <p>*/}}
+{{/*                                <img src="/assets/img/x.gif"*/}}
+{{/*                                     style="display: block; margin: 0 auto; vertical-align:middle;"*/}}
+{{/*                                     class="day_image"/>*/}}
+{{/*                            </p>img*/}}
+{{/*                        </div>*/}}
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div id="mid">
+        <div id="side_navi">
+        </div>
+        <div id="content" class="village1">
+            {{/*        {{ .Data.Title}}*/}}
+            {{template "body" .Data}}
+        </div>
+        <div id="side_info"></div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div id="res">
+    <div id="resWrap">
+
+        <table cellpadding="1" cellspacing="1">
+            <tbody>
+            <tr>
+                <td><img src="/assets/img/x.gif" class="r1" alt="Lumber" title="Lumber"></td>
+                <td id="l4" title="{{ .Data.Production.Lumber}}">{{ .Data.CurrentResource.Lumber}}/{{ .Data.WarehouseCapacity}}</td>
+                <td><img src="/assets/img/x.gif" class="r2" alt="Clay" title="Clay"></td>
+                <td id="l3" title="{{ .Data.Production.Clay}}">{{ .Data.CurrentResource.Lumber}}/{{ .Data.WarehouseCapacity}}</td>
+                <td><img src="/assets/img/x.gif" class="r3" alt="Iron" title="Iron"></td>
+                <td id="l2" title="{{ .Data.Production.Iron}}">{{ .Data.CurrentResource.Lumber}}/{{ .Data.WarehouseCapacity}}</td>
+                <td><img src="/assets/img/x.gif" class="r4" alt="Crop" title="Crop"></td>
+                <td id="l1" title="400">{{ .Data.CurrentResource.Crop}}/{{ .Data.GranaryCapacity}}</td>
+                <td><img src="/assets/img/x.gif" class="r5" alt="Crop consumption" title="Crop consumption"></td>
+                <td>50000/720</td>
+            </tr>
+            </tbody>
+        </table>
+        <table cellpadding="1" cellspacing="1">
+            <tbody>
+            <tr>
+
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td></td>
+                <td>
+                    <font color="#B3B3B3">
+                        <img src="/assets/gpack/img/a/gold_g.gif" alt="Remaining gold"
+                             title="You currently have: 0 gold"> 0
+                        <span><span>G</span><span>o</span><span>l</span><span>d</span></span>
+                    </font>
+                </td>
+
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</div>
