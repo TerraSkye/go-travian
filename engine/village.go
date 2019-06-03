@@ -14,22 +14,24 @@ type Field struct {
 }
 
 func (f *Field) getProduction() int {
-	return production[f.level];
+	return production[f.level]
 }
 
 func (f *Field) getNextProduction() int {
-	return production[f.level+1];
+	return production[f.level+1]
 }
 
 type Village struct {
 	*ycq.AggregateBase
-	ID      string
-	Name    string
-	loyalty int8
-	x       int8
-	y       int8
-	owner   string
-	fields  []Field
+	ID       string
+	Name     string
+	resource Resource
+	loyalty  int8
+	x        int8
+	y        int8
+	owner    string
+
+	fields []Field
 }
 
 // NewInventoryItem constructs a new inventory item aggregate.
@@ -83,6 +85,48 @@ func (a *Village) Establish(x int8, y int8, owner string) error {
 	return nil
 }
 
+func (a *Village) EnqueueBuilding() error {
+
+	a.Apply(ycq.NewEventMessage(a.AggregateID(),
+		&EnqueuedBuilding{ID: a.AggregateID(), index: 8},
+		ycq.Int(a.CurrentVersion())), true)
+	return nil
+}
+
+func (a *Village) CompleteBuilding() error {
+	a.Apply(ycq.NewEventMessage(a.AggregateID(),
+		&CompletedBuilding{ID: a.AggregateID(), index: 8},
+		ycq.Int(a.CurrentVersion())), true)
+	return nil
+}
+
+func (a *Village) AbortBuilding() error {
+	a.Apply(ycq.NewEventMessage(a.AggregateID(),
+		&AbortedBuilding{ID: a.AggregateID(), index: 8},
+		ycq.Int(a.CurrentVersion())), true)
+	return nil
+}
+
+type EnqueuedBuilding struct {
+	ID    string
+	index int8
+}
+
+type CompletedBuilding struct {
+	ID    string
+	index int8
+}
+
+type AbortedBuilding struct {
+	ID    string
+	index int8
+}
+
+type DestroyedBuilding struct {
+	ID    string
+	index int8
+}
+
 //Field upgraded
 type FieldUpgraded struct {
 	ID    string
@@ -93,5 +137,5 @@ func (a *Village) UpgradeField(index int8) error {
 	a.Apply(ycq.NewEventMessage(a.AggregateID(),
 		&FieldUpgraded{ID: a.AggregateID(), index: index},
 		ycq.Int(a.CurrentVersion())), true)
-	return nil;
+	return nil
 }

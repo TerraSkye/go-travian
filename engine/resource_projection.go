@@ -38,11 +38,8 @@ func (v *ResourceProjection) Handle(message ycq.EventMessage) {
 		fmt.Print("hallo")
 		cache.villages[message.AggregateID()] = &Village{ID: event.ID, Name: event.Owner}
 		//delay task for EA upgrades
-		go verySlowFunction()
-		go ticker()
-	case *FieldUpgraded:
+	case *CompletedBuilding:
 		fmt.Printf("index upgraded %d", event.index)
-
 	}
 }
 

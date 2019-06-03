@@ -1,10 +1,10 @@
 package main
 
 import (
+	travian "defer/engine"
 	"fmt"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"helloworld/travian/engine"
 	"log"
 	"math/rand"
 	"net/http"
@@ -29,12 +29,21 @@ func init() {
 	// Configure the read model
 	// Create a readModel instance
 	readModel = travian.NewMap(200, 10)
-
+	dispatcher = ycq.NewInMemoryDispatcher()
 	// we have several projection that we need to init
 
 	// todo init all the projection that we require (this is extendable)
 	eventBus := ycq.NewInternalEventBus()
+	// SAGAS
+	buildingQueue := travian.NewBuildingQueue(dispatcher)
+	eventBus.AddHandler(buildingQueue,
+		&travian.VillageEstablished{},
+		&travian.EnqueuedBuilding{},
+		&travian.CompletedBuilding{},
+		&travian.AbortedBuilding{},
+	)
 
+	// PROJECTIONS
 	// add a projection for the Resources per village.
 	resources := travian.NewResourceProjection()
 	eventBus.AddHandler(resources,
@@ -45,11 +54,11 @@ func init() {
 	// Here we use an in memory event repository.
 	repo = travian.NewInMemoryRepo(eventBus)
 
+	//COMMAND HANDLERS
+
 	// create command handlers!
 	villageCommandHandler := travian.NewVillageCommandHandlers(repo)
 
-	// Create a dispatcher
-	dispatcher = ycq.NewInMemoryDispatcher()
 	// Register the inventory command handlers instance as a command handler
 	// for the events specified.
 	err := dispatcher.RegisterHandler(villageCommandHandler,
@@ -76,46 +85,12 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8088", nil))
 }
 
-var epoch = time.Unix(0, 0).Format(time.RFC1123)
-
-var noCacheHeaders = map[string]string{
-	"Expires":         epoch,
-	"Cache-Control":   "no-cache, private, max-age=0",
-	"Pragma":          "no-cache",
-	"X-Accel-Expires": "0",
-}
-
-var etagHeaders = []string{
-	"ETag",
-	"If-Modified-Since",
-	"If-Match",
-	"If-None-Match",
-	"If-Range",
-	"If-Unmodified-Since",
-}
-
-func NoCache(h http.Handler) http.Handler {
-	fn := func(w http.ResponseWriter, r *http.Request) {
-		// Delete any ETag headers that may have been set
-		for _, v := range etagHeaders {
-			if r.Header.Get(v) != "" {
-				r.Header.Del(v)
-			}
-		}
-		// Set our NoCache headers
-		for k, v := range noCacheHeaders {
-			w.Header().Set(k, v)
-		}
-		h.ServeHTTP(w, r)
-	}
-
-	return http.HandlerFunc(fn)
-}
-
 func setupHandlers() {
 	r := mux.NewRouter()
+
+	//assets with ETAG headers
 	fs := http.FileServer(http.Dir("assets"))
-	http.Handle("/assets/", NoCache(http.StripPrefix("/assets/", fs)))
+	http.Handle("/assets/", Etag(http.StripPrefix("/assets/", fs)))
 
 	r.Methods("GET").Path("/village").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		//params := mux.Vars(r)
@@ -179,58 +154,6 @@ func setupHandlers() {
 	})
 
 	http.Handle("/", handlers.CombinedLoggingHandler(os.Stderr, r))
-
-	//mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-	//
-	//	Items := readModel.GetVillages();
-	//	err := t.ExecuteTemplate(w, "index", Items)
-	//	if err != nil {
-	//		log.Fatal(err)
-	//	}
-	//})
-	//
-	//mux.HandleFunc("/add",
-	//
-	//mux.HandleFunc("/village/{id}/build/{index}", func(w http.ResponseWriter, r *http.Request) {
-	//
-	//	if r.Method == http.MethodPost {
-	//		err := r.ParseForm()
-	//		if err != nil {
-	//			log.Fatal(err)
-	//		}
-	//
-	//		id := ycq.NewUUID()
-	//		em := ycq.NewCommandMessage(id, &travian.UpgradeField{
-	//			ID :   "123",
-	//			Index: 1,
-	//		})
-	//
-	//		err = dispatcher.Dispatch(em)
-	//		if err != nil {
-	//			log.Println(err)
-	//		}
-	//
-	//		http.Redirect(w, r, "/", http.StatusSeeOther)
-	//	}
-	//
-	//	err := t.ExecuteTemplate(w, "build", nil)
-	//	if err != nil {
-	//		log.Fatal(err)
-	//	}
-	//})
-	//
-	//mux.HandleFunc("/assets/", func(w http.ResponseWriter, r *http.Request) {
-	//	staticFile := r.URL.Path[len("/assets/"):]
-	//	if len(staticFile) != 0 {
-	//		f, err := http.Dir("assets/").Open(staticFile)
-	//		if err == nil {
-	//			content := io.ReadSeeker(f)
-	//			http.ServeContent(w, r, staticFile, time.Now(), content)
-	//			return
-	//		}
-	//	}
-	//	http.NotFound(w, r)
-	//})
 
 }
 
