@@ -2,6 +2,8 @@ package main
 
 import (
 	travian "defer/engine"
+	//"defer/engine/queues"
+	"flag"
 	"fmt"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -20,28 +22,31 @@ var (
 	repo        travian.VillageRepository
 	letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	villageView = parseTemplate("dorf1.html")
+	speed       *int
 )
 
 func init() {
 	rand.Seed(time.Now().UnixNano())
 	// CQRS Infrastructure configuration
+	speed = flag.Int("speed", 1, "set the server speed")
 
 	// Configure the read model
 	// Create a readModel instance
 	readModel = travian.NewMap(200, 10)
+
 	dispatcher = ycq.NewInMemoryDispatcher()
 	// we have several projection that we need to init
 
 	// todo init all the projection that we require (this is extendable)
 	eventBus := ycq.NewInternalEventBus()
 	// SAGAS
-	buildingQueue := travian.NewBuildingQueue(dispatcher)
-	eventBus.AddHandler(buildingQueue,
-		&travian.VillageEstablished{},
-		&travian.EnqueuedBuilding{},
-		&travian.CompletedBuilding{},
-		&travian.AbortedBuilding{},
-	)
+	//buildingQueue := queues.NewBuildingQueue(dispatcher)
+	//eventBus.AddHandler(buildingQueue,
+	//	&travian.VillageEstablished{},
+	//	&travian.EnqueuedBuilding{},
+	//	&travian.CompletedBuilding{},
+	//	&travian.AbortedBuilding{},
+	//)
 
 	// PROJECTIONS
 	// add a projection for the Resources per village.
