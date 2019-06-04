@@ -88,7 +88,7 @@
     <div id="mid">
         <div id="side_navi">
         </div>
-        <div id="content" class="village1">
+        <div id="content" class="map">
             {{/*        {{ .Data.Title}}*/}}
             {{template "body" .Data}}
         </div>
@@ -98,18 +98,30 @@
 </div>
 <div id="res">
     <div id="resWrap">
-
         <table cellpadding="1" cellspacing="1">
             <tbody>
+{{/*            <tr>*/}}
+{{/*                <td><img src="/assets/img/x.gif" class="r1" alt="Lumber" title="Lumber"></td>*/}}
+{{/*                <td id="l4" title="{{ .Data.Production.Lumber}}">{{ .Data.CurrentResource.Lumber}}/{{ .Data.WarehouseCapacity}}</td>*/}}
+{{/*                <td><img src="/assets/img/x.gif" class="r2" alt="Clay" title="Clay"></td>*/}}
+{{/*                <td id="l3" title="{{ .Data.Production.Clay}}">{{ .Data.CurrentResource.Lumber}}/{{ .Data.WarehouseCapacity}}</td>*/}}
+{{/*                <td><img src="/assets/img/x.gif" class="r3" alt="Iron" title="Iron"></td>*/}}
+{{/*                <td id="l2" title="{{ .Data.Production.Iron}}">{{ .Data.CurrentResource.Lumber}}/{{ .Data.WarehouseCapacity}}</td>*/}}
+{{/*                <td><img src="/assets/img/x.gif" class="r4" alt="Crop" title="Crop"></td>*/}}
+{{/*                <td id="l1" title="400">{{ .Data.CurrentResource.Crop}}/{{ .Data.GranaryCapacity}}</td>*/}}
+{{/*                <td><img src="/assets/img/x.gif" class="r5" alt="Crop consumption" title="Crop consumption"></td>*/}}
+{{/*                <td>50000/720</td>*/}}
+{{/*            </tr>*/}}
+
             <tr>
                 <td><img src="/assets/img/x.gif" class="r1" alt="Lumber" title="Lumber"></td>
-                <td id="l4" title="{{ .Data.Production.Lumber}}">{{ .Data.CurrentResource.Lumber}}/{{ .Data.WarehouseCapacity}}</td>
+                <td id="l4" title="800">800/800</td>
                 <td><img src="/assets/img/x.gif" class="r2" alt="Clay" title="Clay"></td>
-                <td id="l3" title="{{ .Data.Production.Clay}}">{{ .Data.CurrentResource.Lumber}}/{{ .Data.WarehouseCapacity}}</td>
+                <td id="l3" title="800">800/800</td>
                 <td><img src="/assets/img/x.gif" class="r3" alt="Iron" title="Iron"></td>
-                <td id="l2" title="{{ .Data.Production.Iron}}">{{ .Data.CurrentResource.Lumber}}/{{ .Data.WarehouseCapacity}}</td>
+                <td id="l2" title="800">800/800</td>
                 <td><img src="/assets/img/x.gif" class="r4" alt="Crop" title="Crop"></td>
-                <td id="l1" title="400">{{ .Data.CurrentResource.Crop}}/{{ .Data.GranaryCapacity}}</td>
+                <td id="l1" title="400">800/800</td>
                 <td><img src="/assets/img/x.gif" class="r5" alt="Crop consumption" title="Crop consumption"></td>
                 <td>50000/720</td>
             </tr>
@@ -138,5 +150,10 @@
         </table>
     </div>
 </div>
+</br></br></br></br><div id="side_info">
 
 </div>
+<div class="clear"></div>
+</div>
+<div class="footer-stopper"></div>
+<div class="clear"></div>
