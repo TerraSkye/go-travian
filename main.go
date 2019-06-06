@@ -121,10 +121,13 @@ func setupHandlers() {
 	r.Methods("GET").Path("/karte.php").Queries("z", "{\\d+}").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		center, _ := strconv.Atoi(r.FormValue("z"))
 		tiles := world.FetchMapSegment(center, 7)
+
+		js, _ := json.Marshal(tiles)
 		d := struct {
 			Tiles      [][]*travian.Tile
 			Coordinate travian.Coordinate
-		}{tiles, world.CoordinateForId(center)}
+			TileJson   []byte
+		}{tiles, world.CoordinateForId(center), js}
 
 		_ = tiles
 

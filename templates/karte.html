@@ -271,10 +271,9 @@
             map_init();
         }
     </script>
-    <a id="map_makelarge" href="#" onclick="PopupMap(35153);"><img class="ml" src="/assets/img/x.gif" alt="large map"
-                                                                   title="Large Map"></a> <img id="map_navibox"
-                                                                                               src="/assets/img/x.gif"
-                                                                                               usemap="#map_navibox">
+    <a id="map_makelarge" href="#" onclick="PopupMap(35153);">
+        <img class="ml" src="/assets/img/x.gif" alt="large map" title="Large Map">
+    </a> <img id="map_navibox" src="/assets/img/x.gif" usemap="#map_navibox">
     <map name="map_navibox">
         <area id="ma_n1p7" href="karte.php?z={{ .Coordinate.North 7}}" coords="51,15,73,3,95,15,73,27" shape="poly"
               title="North">
@@ -299,10 +298,7 @@
                    alt="OK"><br><br>
         </form>
     </div>
-    <table cellpadding="1" cellspacing="1" id="map_infobox" class="default">
-        <thead>
-        <tr>
-            <th colspan="2">Details</th>
+    <table cellpadding="1" cellspacing="1" id="map_infobox" class="default"><thead><tr><th colspan="2">Details</th>
         </tr>
         </thead>
         <tbody>

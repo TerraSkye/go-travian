@@ -2,6 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/tdewolff/minify"
+	"github.com/tdewolff/minify/css"
+	"github.com/tdewolff/minify/html"
+
 	"html/template"
 	"io/ioutil"
 	"net/http"
@@ -10,6 +14,10 @@ import (
 
 // parseTemplate applies a given file to the body of the base template.
 func parseTemplate(filename string) *appTemplate {
+	m := minify.New()
+	m.AddFunc("text/css", css.Minify)
+	m.AddFunc("html/template", html.Minify)
+
 	tmpl := template.Must(template.ParseFiles("templates/base.html"))
 
 	// Put the named file into a template called "body"
@@ -18,7 +26,13 @@ func parseTemplate(filename string) *appTemplate {
 	if err != nil {
 		panic(fmt.Errorf("could not read template: %v", err))
 	}
-	template.Must(tmpl.New("body").Parse(string(b)))
+
+	mb, err := m.Bytes("html/template", b)
+	if err != nil {
+		panic(fmt.Errorf("minify error for: %v", err))
+	}
+
+	template.Must(tmpl.New("body").Parse(string(mb)))
 
 	return &appTemplate{tmpl.Lookup("base.html")}
 }

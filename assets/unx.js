@@ -926,6 +926,7 @@ function zg($g, _g) {
 }
 
 function yg(ah, bh, _e) {
+    console.log(ah, bh, _e);
     var of = pe(ah, bh, 'i');
     var area = pe(ah, bh, 'a');
     te(_e, area);
@@ -947,6 +948,7 @@ function pf(area, of) {
 }
 
 function te(_e, area) {
+    console.log(_e);
     area.details = {}
     ;var ch = ['x', 'y', 'nr', 'typ', 'querystring', 'img', 'dname', 'name', 'ew', 'ally', 'vid', 'atyp', 'atime'];
     for (var i = 0; i < _e.length; i++) {

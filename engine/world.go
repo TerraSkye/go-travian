@@ -90,8 +90,23 @@ func (t UnoccupiedVillage) Coordinate() Coordinate {
 
 func (t UnoccupiedVillage) MarshalJSON() ([]byte, error) {
 
+	data := make([]interface{}, 8)
+
+	//'x', 'y', 'nr', 'typ', 'querystring', 'img', 'dname', 'name', 'ew', 'ally', 'vid', 'atyp', 'atime'
+	data[0] = t.coordinate.X
+	data[1] = t.coordinate.Y
+	data[2] = t.coordinate.Id()
+	data[3] = t.tileType
+	data[4] = fmt.Sprintf("d=%d", t.coordinate.Id())
+	data[5] = t.icon
+	data[6] = "test"
+	data[7] = "test"
+
+	return json.Marshal(data)
+
+	//json.NewEncoder().Encode()
 	//[[20,27,3,0,"d=14794&c=03","t7",""]
-	return json.Marshal([]interface{}{t.coordinate.X, t.coordinate.Y, t.tileType, t.tileType, fmt.Sprintf("d=%d", t.coordinate.Id()), "Test"})
+	//return json.Marshal([]interface{}{t.coordinate.X, t.coordinate.Y, t.tileType, t.tileType, fmt.Sprintf("d=%d", t.coordinate.Id()), "Test"})
 }
 
 //OASIS
@@ -117,21 +132,17 @@ func (t Oasis) Coordinate() Coordinate {
 
 func (t Oasis) MarshalJSON() ([]byte, error) {
 
-	//classic_oasis: false
-	//dname: ""
-	//free_oasis: false
-	//fresh: {}
-	//img: "t3"
-	//normal_field: true
-	//nr: 7
-	//occupied_oasis: false
-	//querystring: "d=34553&c=c7"
-	//typ: 0
-	//village: false
-	//x: 81
-	//y: -71
+	data := make([]interface{}, 8)
 
 	//'x', 'y', 'nr', 'typ', 'querystring', 'img', 'dname', 'name', 'ew', 'ally', 'vid', 'atyp', 'atime'
-	//[[20,27,3,0,"d=14794&c=03","t7",""]
-	return json.Marshal([]interface{}{t.coordinate.X, t.coordinate.Y, t.coordinate.Id(), t.tileType, fmt.Sprintf("d=%d", t.coordinate.Id()), "Test", "name", "ally", "z", "zx", 20})
+	data[0] = t.coordinate.X
+	data[1] = t.coordinate.Y
+	data[2] = t.coordinate.Id()
+	data[3] = t.tileType
+	data[4] = fmt.Sprintf("d=%d", t.coordinate.Id())
+	data[5] = t.icon
+	data[6] = "test"
+	data[7] = "test"
+
+	return json.Marshal(data)
 }
