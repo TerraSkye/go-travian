@@ -2,17 +2,16 @@ package main
 
 import (
 	"encoding/json"
-	travian "helloworld/travian/engine"
-	"math"
-	"strconv"
-
 	"fmt"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	travian "helloworld/travian/engine"
 	"log"
+	"math"
 	"math/rand"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/jetbasrawi/go.cqrs"
@@ -106,6 +105,7 @@ func setupHandlers() {
 	http.Handle("/assets/", Etag(http.StripPrefix("/assets/", fs)))
 
 	r.Methods("GET").Path("/ajax.php").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json;")
 		v := r.URL.Query()
 		x, _ := strconv.Atoi(v.Get("x"))
 		xx, _ := strconv.Atoi(v.Get("xx"))

@@ -1,6 +1,5 @@
 package travian
 
-import "C"
 import (
 	"encoding/json"
 	"fmt"
