@@ -15,6 +15,7 @@ type ReadModelFacade interface {
 	FetchMapSegment(center int, size int) [][]*Tile
 	CoordinateForId(id int) Coordinate
 	Coordinate(x int, y int) Coordinate
+	Tile(id int) *Tile
 }
 
 type World struct {
@@ -46,6 +47,11 @@ func (w World) FetchMapSegment(center int, size int) [][]*Tile {
 		}
 	}
 	return tiles
+}
+
+func (w World) Tile(id int) *Tile {
+	coordinate := w.CoordinateForId(id)
+	return w.Tiles[coordinate.absX()][coordinate.absY()]
 }
 
 func (w World) GetVillage(uuid string) *Village {

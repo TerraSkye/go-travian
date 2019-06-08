@@ -18,13 +18,14 @@ import (
 )
 
 var (
-	world          travian.ReadModelFacade
-	dispatcher     ycq.Dispatcher
-	repo           travian.VillageRepository
-	letterRunes    = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-	villageView    = parseTemplate("dorf1.html")
-	karteView      = parseTemplate("karte.html")
-	largeKarteView = parseTemplate("karte2.html")
+	world           travian.ReadModelFacade
+	dispatcher      ycq.Dispatcher
+	repo            travian.VillageRepository
+	letterRunes     = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	villageView     = parseTemplate("dorf1.html", "base.html")
+	karteView       = parseTemplate("karte/karte.html", "base.html")
+	largeKarteView  = parseTemplate("karte/karte2.html", "large.html")
+	detailKarteView = parseTemplate("karte/detail.html", "base.html")
 )
 
 func init() {
@@ -123,12 +124,11 @@ func setupHandlers() {
 		center, _ := strconv.Atoi(r.FormValue("z"))
 		tiles := world.FetchMapSegment(center, 7)
 
-		js, _ := json.Marshal(tiles)
 		d := struct {
 			Tiles      [][]*travian.Tile
 			Coordinate travian.Coordinate
-			TileJson   []byte
-		}{tiles, world.CoordinateForId(center), js}
+			Size       int
+		}{tiles, world.CoordinateForId(center), 100}
 
 		_ = tiles
 
@@ -139,14 +139,13 @@ func setupHandlers() {
 
 	r.Methods("GET").Path("/karte2.php").Queries("z", "{\\d+}").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		center, _ := strconv.Atoi(r.FormValue("z"))
-		tiles := world.FetchMapSegment(center, 7)
+		tiles := world.FetchMapSegment(center, 13)
 
-		js, _ := json.Marshal(tiles)
 		d := struct {
 			Tiles      [][]*travian.Tile
 			Coordinate travian.Coordinate
-			TileJson   []byte
-		}{tiles, world.CoordinateForId(center), js}
+			Size       int
+		}{tiles, world.CoordinateForId(center), 100}
 
 		_ = tiles
 
@@ -157,20 +156,16 @@ func setupHandlers() {
 
 	r.Methods("GET").Path("/karte.php").Queries("d", "{\\d+}").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		center, _ := strconv.Atoi(r.FormValue("z"))
-		c := world.CoordinateForId(center)
-
-		fmt.Printf("Tile", c)
+		center, _ := strconv.Atoi(r.FormValue("d"))
+		tile := world.Tile(center)
 		//tiles := world.FetchMapSegment(center, 7)
 		////fmt.Print(tiles);
-		//d := struct {
-		//	Tiles      [][]*travian.Tile
-		//	Coordinate travian.Coordinate
-		//}{tiles, world.CoordinateForId(center)}
-		//
-		//if err := karteView.Execute(w, r, d); err != nil {
-		//	log.Println(err)
-		//}
+		d := struct {
+			Tile *travian.Tile
+		}{tile}
+		if err := detailKarteView.Execute(w, r, d); err != nil {
+			log.Println(err)
+		}
 	})
 
 	r.Methods("GET").Path("/village").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

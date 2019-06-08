@@ -13,12 +13,12 @@ import (
 )
 
 // parseTemplate applies a given file to the body of the base template.
-func parseTemplate(filename string) *appTemplate {
+func parseTemplate(filename string, layout string) *appTemplate {
 	m := minify.New()
 	m.AddFunc("text/css", css.Minify)
 	m.AddFunc("html/template", html.Minify)
 
-	tmpl := template.Must(template.ParseFiles("templates/base.html"))
+	tmpl := template.Must(template.ParseFiles("templates/" + layout))
 
 	// Put the named file into a template called "body"
 	path := filepath.Join("templates", filename)
@@ -34,7 +34,7 @@ func parseTemplate(filename string) *appTemplate {
 
 	template.Must(tmpl.New("body").Parse(string(mb)))
 
-	return &appTemplate{tmpl.Lookup("base.html")}
+	return &appTemplate{tmpl.Lookup(layout)}
 }
 
 // appTemplate is a user login-aware wrapper for a html/template.

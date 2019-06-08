@@ -3,21 +3,7 @@
 </h1>
 
 <div id="map">
-    <script type="text/javascript">
-        var text_k = {}
-        text_k.details = 'Details';
-        text_k.spieler = 'Player';
-        text_k.einwohner = 'Population';
-        text_k.allianz = 'Alliance';
-        text_k.verlassenes_tal = 'Abandoned valley';
-        text_k.besetztes_tal = 'Occupied oasis';
-        text_k.freie_oase = 'Unoccupied oasis';
-        var text_x = {}
-        text_x.r1 = 'Lumber';
-        text_x.r2 = 'Clay';
-        text_x.r3 = 'Iron';
-        text_x.r4 = 'Crop';
-    </script>
+
     <div id="map_content">
         {{range $XCoordinate,$XAxis := .Tiles}}
             {{range $YCoordinate,$Tile := $XAxis}}
@@ -131,7 +117,7 @@
             <area id="a_4_0" shape="poly" coords="201, 217, 238, 237, 201, 257, 164, 237" title="{{ $tile.Id}}" href="karte.php?d={{ $tile.Id}}&amp;c=71">
         {{end}}
         {{with $tile := index .Tiles 4 1 }}
-            <area id="a_4_1" shape="poly" coords="237, 197, 274, 217, 237, 237, 200, 217" title="{{ $tile.Id}}" href="karte.php?d={{ $tile.Id}}&amp;c=71">
+        <area id="a_4_1" shape="poly" coords="237, 197, 274, 217, 237, 237, 200, 217" title="{{ $tile.Id}}" href="karte.php?d={{ $tile.Id}}&amp;c=71">
         {{end}}
         {{with $tile := index .Tiles 4 2 }}
             <area id="a_4_2" shape="poly" coords="273, 177, 310, 197, 273, 217, 236, 197" title="{{ $tile.Id}}" href="karte.php?d={{ $tile.Id}}&amp;c=71">
@@ -198,79 +184,6 @@
 
     </map>
     <img id="map_links" src="/assets/img/x.gif" usemap="#map_overlay">
-    <script type="text/javascript">
-        m_c.az = {
-            // n1 => north 1 tile
-            "n1": 34952,
-            "n1p7": 33746, // north 7
-            "n2": 35154,
-            "n2p7": 35146,
-            "n3": 35354,
-            "n3p7": 36560,
-            "n4": 35152,
-            "n4p7": 35160
-        };
-        m_c.ad = [[[75, -77, 4, 0, "d=35753&c=71", "t1", ""]
-            , [75, -76, 3, 0, "d=35552&c=c1", "t6", ""]
-            , [75, -75, 0, 4, "d=35351&c=11", "o4", ""], [75, -74, 5, 0, "d=35150&c=2d", "t7", ""]
-            , [75, -73, 5, 0, "d=34949&c=31", "t5", ""]
-            , [75, -72, 5, 0, "d=34748&c=24", "t2", ""]
-            , [75, -71, 0, 7, "d=34547&c=13", "o7", ""]],
-            [[76, -77, 5, 0, "d=35754&c=a2", "t2", ""]
-                , [76, -76, 3, 0, "d=35553&c=85", "t7", ""]
-                , [76, -75, 9, 0, "d=35352&c=6f", "t3", ""]
-                , [76, -74, 4, 0, "d=35151&c=46", "t7", ""]
-                , [76, -73, 8, 0, "d=34950&c=4c", "t2", ""]
-                , [76, -72, 3, 0, "d=34749&c=cc", "t5", ""]
-                , [76, -71, 3, 0, "d=34548&c=db", "t7", ""]
-            ],
-            [[77, -77, 5, 0, "d=35755&c=27", "t0", ""]
-                , [77, -76, 12, 0, "d=35554&c=5c", "t4", ""]
-                , [77, -75, 0, 3, "d=35353&c=0f", "o3", ""], [77, -74, 0, 8, "d=35152&c=40", "o8", ""], [77, -73, 3, 0, "d=34951&c=09", "t6", ""]
-                , [77, -72, 5, 0, "d=34750&c=c7", "t7", ""]
-                , [77, -71, 0, 9, "d=34549&c=df", "o9", ""]],
-            [[78, -77, 11, 0, "d=35756&c=0a", "t4", ""]
-                , [78, -76, 12, 0, "d=35555&c=56", "t8", ""]
-                , [78, -75, 5, 0, "d=35354&c=8e", "t6", ""]
-                , [78, -74, 3, 0, "d=35153&c=c5", "b00", "", "test's village ", "test", "20", "", "1"]
-                , [78, -73, 10, 0, "d=34952&c=25", "t3", ""]
-                , [78, -72, 6, 0, "d=34751&c=44", "t3", ""]
-                , [78, -71, 4, 0, "d=34550&c=4c", "t3", ""]
-            ],
-            [[79, -77, 3, 0, "d=35757&c=8b", "t1", ""]
-                , [79, -76, 0, 6, "d=35556&c=ec", "o6", ""], [79, -75, 3, 0, "d=35355&c=33", "t7", ""]
-                , [79, -74, 3, 0, "d=35154&c=9c", "t8", ""]
-                , [79, -73, 9, 0, "d=34953&c=51", "t1", ""]
-                , [79, -72, 3, 0, "d=34752&c=32", "t5", ""]
-                , [79, -71, 10, 0, "d=34551&c=f0", "t1", ""]
-            ],
-            [[80, -77, 2, 0, "d=35758&c=6d", "t4", ""]
-                , [80, -76, 2, 0, "d=35557&c=f8", "t2", ""]
-                , [80, -75, 4, 0, "d=35356&c=61", "t8", ""]
-                , [80, -74, 9, 0, "d=35155&c=ee", "t3", ""]
-                , [80, -73, 2, 0, "d=34954&c=fb", "t5", ""]
-                , [80, -72, 11, 0, "d=34753&c=a7", "t0", ""]
-                , [80, -71, 10, 0, "d=34552&c=ac", "t1", ""]
-            ],
-            [[81, -77, 3, 0, "d=35759&c=6e", "t5", ""]
-                , [81, -76, 3, 0, "d=35558&c=72", "t8", ""]
-                , [81, -75, 3, 0, "d=35357&c=f4", "t3", ""]
-                , [81, -74, 2, 0, "d=35156&c=89", "t0", ""]
-                , [81, -73, 2, 0, "d=34955&c=79", "t1", ""]
-                , [81, -72, 10, 0, "d=34754&c=ab", "t4", ""]
-                , [81, -71, 7, 0, "d=34553&c=c7", "t3", ""]
-            ]
-        ];
-        m_c.z = {"x":{{ .Coordinate.X}}, "y":{{ .Coordinate.Y}}};
-        m_c.size = 7;
-        m_c.world_max = 100;
-        var mdim = {"x": 7, "y": 7, "rad": 3}
-        var mmode = 0;
-
-        function init_local() {
-            map_init();
-        }
-    </script>
     <a id="map_makelarge" href="#" onclick="PopupMap(35153);">
         <img class="ml" src="/assets/img/x.gif" alt="large map" title="Large Map">
     </a> <img id="map_navibox" src="/assets/img/x.gif" usemap="#map_navibox">
@@ -292,13 +205,15 @@
     {{/*    </map>*/}}
     <div id="map_coords">
         <form name="map_coords" method="post" action="karte.php">
-            <span>x </span><input id="mcx" class="text" name="xp" value="78" maxlength="4">
-            <span>y </span><input id="mcy" class="text" name="yp" value="-74" maxlength="4">
-            <input type="image" id="btn_ok" class="dynamic_img" value="ok" name="s1" src="/assets/img/x.gif"
-                   alt="OK"><br><br>
+            <span>x </span><input id="mcx" class="text" name="xp" value="{{ .Coordinate.X}}" maxlength="4">
+            <span>y </span><input id="mcy" class="text" name="yp" value="{{ .Coordinate.Y}}" maxlength="4">
+            <input type="image" id="btn_ok" class="dynamic_img" value="ok" name="s1" src="/assets/img/x.gif"  alt="OK"><br><br>
         </form>
     </div>
-    <table cellpadding="1" cellspacing="1" id="map_infobox" class="default"><thead><tr><th colspan="2">Details</th>
+    <table cellpadding="1" cellspacing="1" id="map_infobox" class="default">
+        <thead>
+        <tr>
+            <th colspan="2">Details</th>
         </tr>
         </thead>
         <tbody>
@@ -317,3 +232,41 @@
         </tbody>
     </table>
 </div>
+
+
+<script type="text/javascript">
+    var text_k = {};
+    text_k.details = 'Details';
+    text_k.spieler = 'Player';
+    text_k.einwohner = 'Population';
+    text_k.allianz = 'Alliance';
+    text_k.verlassenes_tal = 'Abandoned valley';
+    text_k.besetztes_tal = 'Occupied oasis';
+    text_k.freie_oase = 'Unoccupied oasis';
+    var text_x = {};
+    text_x.r1 = 'Lumber';
+    text_x.r2 = 'Clay';
+    text_x.r3 = 'Iron';
+    text_x.r4 = 'Crop';
+    m_c.az = {
+        // n1 => north 1 tile
+        "n1": {{ .Coordinate.North 1}},
+        "n1p7": {{ .Coordinate.North 7}}, // north 7
+        "n2": {{ .Coordinate.East 1}},
+        "n2p7": {{ .Coordinate.East 7}},
+        "n3": {{ .Coordinate.South 1}},
+        "n3p7": {{ .Coordinate.South 7}},
+        "n4": {{ .Coordinate.West 1}},
+        "n4p7": {{ .Coordinate.West 7}}
+    };
+    m_c.ad = {{.Tiles}}
+        m_c.z = {"x":{{ .Coordinate.X}}, "y":{{ .Coordinate.Y}}};
+    m_c.size = 7;
+    m_c.world_max = {{.Size}};
+    var mdim = {"x": 7, "y": 7, "rad": 3};
+    var mmode = 0;
+
+    function init_local() {
+        map_init();
+    }
+</script>

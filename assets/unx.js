@@ -313,7 +313,7 @@ function PopupMap(i) {
     }
     pb = document.getElementById("ce");
     if (pb != null) {
-        var tc = '<div class="popup_map">' + '<div id="drag2"><a href="#" onClick="Close(); return false;"><img src="img/x.gif" border="0" width="20px" height="20px"  alt="Move"></a></div>' + '<iframe frameborder="0" id="Frame" src="karte2.php?z=' + i + '" width="1000" height="575" border="0" scrolling="no"></iframe>' + '</div>';
+        var tc = '<div class="popup_map">' + '<div id="drag2"><a href="#" onClick="Close(); return false;"><img src="/assets/img/x.gif" border="0" width="20px" height="20px"  alt="Move"></a></div>' + '<iframe frameborder="0" id="Frame" src="karte2.php?z=' + i + '" width="1000" height="575" border="0" scrolling="no"></iframe>' + '</div>';
         pb.innerHTML = tc;
         uc2();
     }
