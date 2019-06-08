@@ -18,12 +18,13 @@ import (
 )
 
 var (
-	world       travian.ReadModelFacade
-	dispatcher  ycq.Dispatcher
-	repo        travian.VillageRepository
-	letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-	villageView = parseTemplate("dorf1.html")
-	karteView   = parseTemplate("karte.html")
+	world          travian.ReadModelFacade
+	dispatcher     ycq.Dispatcher
+	repo           travian.VillageRepository
+	letterRunes    = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	villageView    = parseTemplate("dorf1.html")
+	karteView      = parseTemplate("karte.html")
+	largeKarteView = parseTemplate("karte2.html")
 )
 
 func init() {
@@ -66,7 +67,7 @@ func init() {
 	// Here we use an in memory event repository.
 	repo = travian.NewInMemoryRepo(eventBus)
 
-	//COMMAND HANDLERS
+	//COMMAND HANDLERSlargeKarteView
 
 	// create command handlers!
 	villageCommandHandler := travian.NewVillageCommandHandlers(repo)
@@ -132,6 +133,24 @@ func setupHandlers() {
 		_ = tiles
 
 		if err := karteView.Execute(w, r, d); err != nil {
+			log.Println(err)
+		}
+	})
+
+	r.Methods("GET").Path("/karte2.php").Queries("z", "{\\d+}").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		center, _ := strconv.Atoi(r.FormValue("z"))
+		tiles := world.FetchMapSegment(center, 7)
+
+		js, _ := json.Marshal(tiles)
+		d := struct {
+			Tiles      [][]*travian.Tile
+			Coordinate travian.Coordinate
+			TileJson   []byte
+		}{tiles, world.CoordinateForId(center), js}
+
+		_ = tiles
+
+		if err := largeKarteView.Execute(w, r, d); err != nil {
 			log.Println(err)
 		}
 	})
